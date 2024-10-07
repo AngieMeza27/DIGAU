@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './opciones_selector.dart';
 
 class RegistroFormulario extends StatefulWidget {
   @override
@@ -12,6 +13,13 @@ class _RegistroFormularioState extends State<RegistroFormulario> {
   String _email = '';
   String _password = '';
   String _cargo = '';
+  String _opcionSeleccionada = '';
+  
+  void _manejarSeleccion(String opcion) {
+    setState(() {
+      _opcionSeleccionada = opcion;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +27,16 @@ class _RegistroFormularioState extends State<RegistroFormulario> {
       key: _formKey,
       child: Column(
         children: <Widget>[
+          Text(
+              'Opción seleccionada: $_opcionSeleccionada',
+              style: TextStyle(fontSize: 18),
+            ),
+            Expanded(
+              child: OpcionesSelector(
+                opciones: ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4'], // Las opciones que deseas mostrar
+                onSeleccionado: _manejarSeleccion, // Callback para manejar la selección
+              ),
+            ),
           TextFormField(
             decoration: InputDecoration(labelText: 'Nombre'),
             validator: (value) {
