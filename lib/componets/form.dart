@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './opciones_selector.dart';
+import './dropdown_selector.dart';
 
 class RegistroFormulario extends StatefulWidget {
   @override
@@ -14,29 +14,28 @@ class _RegistroFormularioState extends State<RegistroFormulario> {
   String _password = '';
   String _cargo = '';
   String _opcionSeleccionada = '';
+  DateTime? _fechaNacimiento;
   
-  void _manejarSeleccion(String opcion) {
-    setState(() {
-      _opcionSeleccionada = opcion;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
         children: <Widget>[
-          Text(
-              'Opción seleccionada: $_opcionSeleccionada',
-              style: TextStyle(fontSize: 18),
+            Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity, // Esto hace que ocupe todo el ancho
+                  child:  DropdownSelector(
+                       opciones: ['Administrador','Cliente','Reaccion'],
+                   ),
+                ),
+              ],
             ),
-            Expanded(
-              child: OpcionesSelector(
-                opciones: ['Opción 1', 'Opción 2', 'Opción 3', 'Opción 4'], // Las opciones que deseas mostrar
-                onSeleccionado: _manejarSeleccion, // Callback para manejar la selección
-              ),
-            ),
+          ),
           TextFormField(
             decoration: InputDecoration(labelText: 'Nombre'),
             validator: (value) {
@@ -74,17 +73,32 @@ class _RegistroFormularioState extends State<RegistroFormulario> {
               _email = value ?? '';
             },
           ),
-          TextFormField(
-            decoration: InputDecoration(labelText: 'Contraseña'),
-            obscureText: true,
+           TextFormField(
+            readOnly: true, // Esto evita que el usuario escriba en el campo
+            decoration: InputDecoration(
+              labelText: 'Fecha de Nacimiento',
+              hintText: _fechaNacimiento != null 
+                  ? '${_fechaNacimiento!.day}/${_fechaNacimiento!.month}/${_fechaNacimiento!.year}' 
+                  : 'Agrega Fecha',
+            ),
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime(2000), // Fecha inicial por defecto
+                firstDate: DateTime(1900), // Fecha mínima
+                lastDate: DateTime.now(), // Fecha máxima es hoy
+              );
+              if (pickedDate != null) {
+                setState(() {
+                  _fechaNacimiento = pickedDate;
+                });
+              }
+            },
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Por favor ingresa una contraseña';
+              if (_fechaNacimiento == null) {
+                return 'Por favor selecciona tu fecha de nacimiento';
               }
               return null;
-            },
-            onSaved: (value) {
-              _password = value ?? '';
             },
           ),
           SizedBox(height: 20),
