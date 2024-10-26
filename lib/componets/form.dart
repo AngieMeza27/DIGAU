@@ -134,7 +134,7 @@ class _RegistroFormularioState extends State<RegistroFormulario> {
                       'Colombia',
                       'Venezuela',
                       'Argentina',
-                      'Brazil'
+                      'Brasil'
                     ],
                     hintText: 'Selecciona Nacionalidad',
                   ),
