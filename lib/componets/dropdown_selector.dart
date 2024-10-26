@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class DropdownSelector extends StatefulWidget {
   final List<String> opciones; 
-  DropdownSelector({required this.opciones});
+  final String hintText;
+  DropdownSelector({required this.opciones, required this.hintText});
 
   @override
   _DropdownSelectorState createState() => _DropdownSelectorState();
@@ -13,7 +14,7 @@ class _DropdownSelectorState extends State<DropdownSelector> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
-      hint: Text('Selecciona tipo de usuario'),
+      hint: Text(widget.hintText),
       value: _opcionSeleccionada, 
       icon: Icon(Icons.arrow_downward),
       onChanged: (String? nuevaOpcion) {
